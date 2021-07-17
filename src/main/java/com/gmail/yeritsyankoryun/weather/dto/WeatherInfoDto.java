@@ -5,6 +5,7 @@ import com.gmail.yeritsyankoryun.weather.model.WeatherType;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,7 +29,7 @@ public class WeatherInfoDto {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(@Valid String country) {
         this.country = country;
     }
 
@@ -36,7 +37,7 @@ public class WeatherInfoDto {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(@Valid String city) {
         this.city = city;
     }
 
@@ -44,7 +45,7 @@ public class WeatherInfoDto {
         return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(@Valid double temperature) {
         if(temperature>-90 && temperature<60)
             this.temperature = temperature;
     }
@@ -53,7 +54,7 @@ public class WeatherInfoDto {
         return type;
     }
 
-    public void setType(WeatherType type) {
+    public void setType(@Valid WeatherType type) {
         this.type = type;
     }
 
@@ -61,7 +62,7 @@ public class WeatherInfoDto {
         return windSpeed;
     }
 
-    public void setWindSpeed(int windSpeed) {
+    public void setWindSpeed(@Valid int windSpeed) {
         if(windSpeed>0 && windSpeed<372)
             this.windSpeed = windSpeed;
     }

@@ -19,54 +19,40 @@ import java.util.stream.Collectors;
 @RequestMapping("api/weather")
 public class WeatherController {
     private final WeatherService weatherService;
-    private final ConverterService converterService;
 
     @Autowired
-    public WeatherController(WeatherService weatherService, ConverterService converterService) {
+    public WeatherController(WeatherService weatherService) {
         this.weatherService = weatherService;
-        this.converterService = converterService;
     }
 
     @GetMapping
     public List<WeatherInfoDto> getAllWeather() {
-        List<WeatherInfoModel> weathers = weatherService.getAllWeather();
-        return weathers.stream().map(converterService::convertToDto).collect(Collectors.toList());
+        return weatherService.getAllWeather();
     }
 
     @GetMapping(path = "temperature")
     public double getTempByCC(@RequestBody WeatherInfoDto dto) {
-        WeatherInfoModel model = converterService.convertToModel(dto);
-        return weatherService.getByCC(model.getCountry(), model.getCity()).get().getTemperature();
+        return weatherService.getByCC(dto).get().getTemperature();
     }
 
     @PostMapping(path = "create")
-    public void create(@Valid @RequestBody WeatherInfoDto weatherDto) throws Exception {
-        if (weatherDto.getTemperature() != 0)
-            weatherService.addWeather(converterService.convertToModel(weatherDto));
-        else throw new Exception();
+    public void create(@RequestBody WeatherInfoDto dto) throws Exception {
+        weatherService.addWeather(dto);
     }
 
     @PutMapping(path = "updateall")
-    public void updateAll(@Valid @RequestBody WeatherInfoDto weatherDto) throws Exception {
-        if (weatherDto.getTemperature() != 0 && weatherDto.getWindSpeed()!=0){
-            WeatherInfoModel temp=weatherService.getByCC(weatherDto.getCountry(), weatherDto.getCity()).get();
-            temp.setTemperature(weatherDto.getTemperature());
-            temp.setWindSpeed(weatherDto.getWindSpeed());
-            temp.setType(weatherDto.getType());
-        }
-        else throw new Exception();
+    public void updateAll(@RequestBody WeatherInfoDto dto) throws Exception {
+        weatherService.updateWeather(dto);
     }
 
     @PutMapping(path = "update")
-    public void updateTemp(@Valid @RequestBody WeatherInfoDto weatherDto) throws Exception {
-        if (weatherDto.getTemperature() != 0)
-            weatherService.getByCC(weatherDto.getCountry(), weatherDto.getCity()).get().setTemperature(weatherDto.getTemperature());
-        else throw new Exception();
+    public void updateTemp(@RequestBody WeatherInfoDto dto) throws Exception {
+        weatherService.updateWeatherTemperature(dto);
     }
 
     @DeleteMapping(path = "deletecc")
-    public void deleteByCC(@Valid @RequestBody WeatherInfoDto weatherDto) {
-        weatherService.deleteByCC(weatherDto.getCountry(), weatherDto.getCity());
+    public void deleteByCC(@RequestBody WeatherInfoDto dto) {
+        weatherService.deleteByCC(dto);
     }
 
     @DeleteMapping(path = "delete")
