@@ -24,7 +24,7 @@ public class WeatherController {
 
     @GetMapping(path = "temperature")
     public double getTempByCC(@RequestBody WeatherInfoDto dto) {
-        return weatherService.getByCC(dto).get().getTemperature();
+        return weatherService.getTemperature(dto);
     }
 
     @PostMapping(path = "create")

@@ -30,7 +30,9 @@ public class WeatherService {
         WeatherInfoModel model = converterService.convertToModel(dto);
         return weatherDataAccessService.selectByCC(dto.getCountry(), model.getCity());
     }
-
+    public double getTemperature(WeatherInfoDto dto){
+        return getByCC(dto).get().getTemperature();
+    }
     public void addWeather( WeatherInfoDto dto) throws Exception {
         if (dto.getTemperature() != 0)
             weatherDataAccessService.insertWeather(converterService.convertToModel(dto));
