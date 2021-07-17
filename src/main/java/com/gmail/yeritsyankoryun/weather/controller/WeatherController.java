@@ -1,19 +1,11 @@
 package com.gmail.yeritsyankoryun.weather.controller;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.gmail.yeritsyankoryun.weather.dto.WeatherInfoDto;
-import com.gmail.yeritsyankoryun.weather.model.WeatherInfoModel;
-import com.gmail.yeritsyankoryun.weather.service.ConverterService;
 import com.gmail.yeritsyankoryun.weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/weather")
