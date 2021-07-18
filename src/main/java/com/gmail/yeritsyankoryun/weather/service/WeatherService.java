@@ -22,16 +22,16 @@ public class WeatherService {
         this.weatherConverter = weatherConverter;
     }
 
-    public List<WeatherInfoDto> getWeatherInfo(String country,String city) {
-        if(country==null && city==null)
-        return weatherDataAccessService.getAll().stream()
-                .map(weatherConverter::convertToDto)
-                .collect(Collectors.toList());
-        else if(country==null || city==null){
+    public List<WeatherInfoDto> getWeatherInfo(String country, String city) {
+        if (country == null && city == null)
+            return weatherDataAccessService.getAll().stream()
+                    .map(weatherConverter::convertToDto)
+                    .collect(Collectors.toList());
+        else if (country == null || city == null) {
             return null;
         }
         return weatherDataAccessService.getAll().stream()
-                .filter(weather-> weather.getCountry().equals(country) && weather.getCity().equals(city))
+                .filter(weather -> weather.getCountry().equals(country) && weather.getCity().equals(city))
                 .map(weatherConverter::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -42,25 +42,24 @@ public class WeatherService {
     }
 
     public void addWeather(WeatherInfoDto dto) {
-            weatherDataAccessService.insert(weatherConverter.convertToModel(dto));
+        weatherDataAccessService.insert(weatherConverter.convertToModel(dto));
     }
 
-    public void updateWeather(WeatherInfoDto dto)  {
-            WeatherInfoModel temp = getByCC(dto).get();
-            if(dto.getTemperature()!=null)
+    public void updateWeather(WeatherInfoDto dto) {
+        WeatherInfoModel temp = getByCC(dto).get();
+        if (dto.getTemperature() != null)
             temp.setTemperature(dto.getTemperature());
-            if(dto.getWindSpeed()!=null)
+        if (dto.getWindSpeed() != null)
             temp.setWindSpeed(dto.getWindSpeed());
-            if(dto.getType()!=null)
+        if (dto.getType() != null)
             temp.setType(dto.getType());
     }
 
-    public void delete(String country,String city){
-        if(country==null && city==null)
+    public void delete(String country, String city) {
+        if (country == null && city == null)
             weatherDataAccessService.deleteAll();
-        else if(country==null || city==null){
-            System.out.println("do Nothing");
-        }
-        else weatherDataAccessService.deleteByCC(country,city);
+        else if (country == null || city == null) {
+            System.out.println("do nothing");
+        } else weatherDataAccessService.deleteByCC(country, city);
     }
 }

@@ -9,10 +9,10 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.*;
 
 public class WeatherInfoDto {
-    @NotBlank(message = "errrror")
+    @NotBlank
     @Size(min = 2, max = 3)
     private String country;
-    @NotBlank(message = "(message = errrror)")
+    @NotBlank
     @Size(min = 2)
     private String city;
     @Min(-90)
