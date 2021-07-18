@@ -3,6 +3,7 @@ package com.gmail.yeritsyankoryun.weather.service;
 import com.gmail.yeritsyankoryun.weather.dao.WeatherDataAccessService;
 import com.gmail.yeritsyankoryun.weather.dto.WeatherInfoDto;
 import com.gmail.yeritsyankoryun.weather.model.WeatherInfoModel;
+import com.gmail.yeritsyankoryun.weather.service.converter.WeatherConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,50 +14,53 @@ import java.util.stream.Collectors;
 @Service
 public class WeatherService {
     private final WeatherDataAccessService weatherDataAccessService;
-    private final ConverterService converterService;
+    private final WeatherConverter weatherConverter;
 
     @Autowired
-    public WeatherService(WeatherDataAccessService weatherDataAccessService, ConverterService converterService) {
+    public WeatherService(WeatherDataAccessService weatherDataAccessService, WeatherConverter weatherConverter) {
         this.weatherDataAccessService = weatherDataAccessService;
-        this.converterService = converterService;
+        this.weatherConverter = weatherConverter;
     }
 
-
-    public List<WeatherInfoDto> getAllWeather() {
-        return weatherDataAccessService.selectAllWeather().stream().map(converterService::convertToDto).collect(Collectors.toList());
+    public List<WeatherInfoDto> getWeatherInfo(String country,String city) {
+        if(country==null && city==null)
+        return weatherDataAccessService.getAll().stream()
+                .map(weatherConverter::convertToDto)
+                .collect(Collectors.toList());
+        else if(country==null || city==null){
+            return null;
+        }
+        return weatherDataAccessService.getAll().stream()
+                .filter(weather-> weather.getCountry().equals(country) && weather.getCity().equals(city))
+                .map(weatherConverter::convertToDto)
+                .collect(Collectors.toList());
     }
 
     public Optional<WeatherInfoModel> getByCC(WeatherInfoDto dto) {
-        WeatherInfoModel model = converterService.convertToModel(dto);
-        return weatherDataAccessService.selectByCC(dto.getCountry(), model.getCity());
-    }
-    public double getTemperature(WeatherInfoDto dto){
-        return getByCC(dto).get().getTemperature();
-    }
-    public void addWeather( WeatherInfoDto dto) throws Exception {
-        if (dto.getTemperature() != 0)
-            weatherDataAccessService.insertWeather(converterService.convertToModel(dto));
-        else throw new Exception();
-    }
-    public void updateWeather(WeatherInfoDto dto) throws Exception {
-        if (dto.getTemperature() != 0 && dto.getWindSpeed()!=0){
-            WeatherInfoModel temp=getByCC(dto).get();
-            temp.setTemperature(dto.getTemperature());
-            temp.setWindSpeed(dto.getWindSpeed());
-            temp.setType(dto.getType());
-    }
-        else throw new Exception();
-    }
-    public void updateWeatherTemperature(WeatherInfoDto dto) throws Exception {
-        if (dto.getTemperature() != 0)
-            getByCC(dto).get().setTemperature(dto.getTemperature());
-        else throw new Exception();
-    }
-    public void deleteByCC(WeatherInfoDto dto) {
-        weatherDataAccessService.deleteByCC(dto.getCountry(), dto.getCity());
+        WeatherInfoModel model = weatherConverter.convertToModel(dto);
+        return weatherDataAccessService.getByCC(dto.getCountry(), model.getCity());
     }
 
-    public void deleteAll() {
-        weatherDataAccessService.deleteAll();
+    public void addWeather(WeatherInfoDto dto) {
+            weatherDataAccessService.insert(weatherConverter.convertToModel(dto));
+    }
+
+    public void updateWeather(WeatherInfoDto dto)  {
+            WeatherInfoModel temp = getByCC(dto).get();
+            if(dto.getTemperature()!=null)
+            temp.setTemperature(dto.getTemperature());
+            if(dto.getWindSpeed()!=null)
+            temp.setWindSpeed(dto.getWindSpeed());
+            if(dto.getType()!=null)
+            temp.setType(dto.getType());
+    }
+
+    public void delete(String country,String city){
+        if(country==null && city==null)
+            weatherDataAccessService.deleteAll();
+        else if(country==null || city==null){
+            System.out.println("do Nothing");
+        }
+        else weatherDataAccessService.deleteByCC(country,city);
     }
 }

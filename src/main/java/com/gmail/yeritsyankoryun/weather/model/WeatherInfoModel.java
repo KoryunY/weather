@@ -4,22 +4,23 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class WeatherInfoModel {
-    @NotNull
+    @NotBlank(message = "errrror")
     @Size(min = 2, max = 3)
     private String country;
-    @NotNull
+    @NotBlank(message = "(message = errrror)")
     @Size(min = 2)
     private String city;
-    @NotNull
+    @Min(-90)
+    @Max(60)
     private double temperature; // in Celsius
     @Enumerated(EnumType.ORDINAL)
     @NotNull
     private WeatherType type;
-    @NotNull
+    @Min(0)
+    @Max(372)
     private int windSpeed; // in km/h
 
     public WeatherInfoModel() {
@@ -29,8 +30,8 @@ public class WeatherInfoModel {
         this.country = country;
         this.city = city;
         this.temperature = temperature;
-        this.type=type;
-        this.windSpeed=windSpeed;
+        this.type = type;
+        this.windSpeed = windSpeed;
 
     }
 
@@ -67,12 +68,10 @@ public class WeatherInfoModel {
     }
 
     public void setWindSpeed(int windSpeed) {
-        if(windSpeed>0 && windSpeed<372)
         this.windSpeed = windSpeed;
     }
 
     public void setTemperature(double temperature) {
-        if (temperature > -90 && temperature < 60)
-            this.temperature = temperature;
+        this.temperature = temperature;
     }
 }

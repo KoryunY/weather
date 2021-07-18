@@ -18,18 +18,18 @@ public class WeatherDataAccessService {
 
     }
 
-    public List<WeatherInfoModel> selectAllWeather() {
+    public List<WeatherInfoModel> getAll() {
         return weathers;
     }
 
-    public Optional<WeatherInfoModel> selectByCC(String country, String city) {
+    public Optional<WeatherInfoModel> getByCC(String country, String city) {
         return weathers.stream().filter(weather -> weather.getCity().equals(city) && weather.getCountry().equals(country)).findFirst();
     }
-    public void insertWeather(WeatherInfoModel weather){
+    public void insert(WeatherInfoModel weather){
         weathers.add(weather);
     }
     public void deleteByCC(String country, String city){
-        selectByCC(country,city).ifPresent(model -> weathers.remove(model));
+        getByCC(country,city).ifPresent(model -> weathers.remove(model));
     }
     public void deleteAll(){
         weathers.clear();
