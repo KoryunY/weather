@@ -1,6 +1,5 @@
 package com.gmail.yeritsyankoryun.weather.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

@@ -2,17 +2,13 @@ package com.gmail.yeritsyankoryun.weather.controller;
 
 import com.gmail.yeritsyankoryun.weather.dto.WeatherInfoDto;
 import com.gmail.yeritsyankoryun.weather.service.WeatherService;
-import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +35,7 @@ public class WeatherController {
     }
 
     @PutMapping(path = "update")
-    public void update(@Valid @RequestBody WeatherInfoDto dto) throws Exception {
+    public void update(@Valid @RequestBody WeatherInfoDto dto) {
         weatherService.updateWeather(dto);
     }
 
