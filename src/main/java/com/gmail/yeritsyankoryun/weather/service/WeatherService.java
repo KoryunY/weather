@@ -37,8 +37,7 @@ public class WeatherService {
     }
 
     public Optional<WeatherInfoModel> getByCC(WeatherInfoDto dto) {
-        WeatherInfoModel model = weatherConverter.convertToModel(dto);
-        return weatherDataAccessService.getByCC(dto.getCountry(), model.getCity());
+        return weatherDataAccessService.getByCC(dto.getCountry(), dto.getCity());
     }
 
     public void addWeather(WeatherInfoDto dto) {
