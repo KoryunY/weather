@@ -27,8 +27,11 @@ public class WeatherDataAccessService {
         return weathers.stream().filter(weather -> weather.getCity().equals(city) && weather.getCountry().equals(country)).findFirst();
     }
 
-    public void insert(WeatherInfoModel weather) {
-        weathers.add(weather);
+    public void persist(WeatherInfoModel weather) {
+        if(getByCC(weather.getCountry(), weather.getCity()).isEmpty())
+            weathers.add(weather);
+        else throw  new IllegalArgumentException("Exist",new Throwable("Model"));
+
     }
 
     public void update(WeatherInfoModel newWeather) {

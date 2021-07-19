@@ -1,18 +1,11 @@
 package com.gmail.yeritsyankoryun.weather.service;
 
-import com.gmail.yeritsyankoryun.weather.controller.WeatherController;
 import com.gmail.yeritsyankoryun.weather.dao.WeatherDataAccessService;
 import com.gmail.yeritsyankoryun.weather.dto.WeatherInfoDto;
-import com.gmail.yeritsyankoryun.weather.model.WeatherInfoModel;
 import com.gmail.yeritsyankoryun.weather.service.converter.WeatherConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,9 +31,7 @@ public class WeatherService {
     }
 
     public void addWeather(WeatherInfoDto dto) {
-        if(weatherDataAccessService.getByCC(dto.getCountry(), dto.getCity()).isEmpty())
-            weatherDataAccessService.insert(weatherConverter.convertToModel(dto));
-        else updateWeather(dto);
+            weatherDataAccessService.persist(weatherConverter.convertToModel(dto));
     }
 
     public void updateWeather(WeatherInfoDto dto) {
