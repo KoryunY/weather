@@ -30,7 +30,8 @@ public class WeatherDataAccessService {
     public void insert(WeatherInfoModel weather) {
         weathers.add(weather);
     }
-    public void update(WeatherInfoDto newWeather){
+
+    public void update(WeatherInfoModel newWeather) {
         WeatherInfoModel oldWeather = getByCC(newWeather.getCountry(), newWeather.getCity()).get();
         if (newWeather.getTemperature() != null)
             oldWeather.setTemperature(newWeather.getTemperature());
@@ -39,6 +40,7 @@ public class WeatherDataAccessService {
         if (newWeather.getType() != null)
             oldWeather.setType(newWeather.getType());
     }
+
     public void deleteByCC(String country, String city) {
         getByCC(country, city).ifPresent(model -> weathers.remove(model));
     }

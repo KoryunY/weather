@@ -14,13 +14,14 @@ public class WeatherInfoModel {
     private String city;
     @Min(-90)
     @Max(60)
-    private double temperature; // in Celsius
+    private Double temperature; // in Celsius
     @Enumerated(EnumType.ORDINAL)
     @NotNull
     private WeatherType type;
+    @NotNull
     @Min(0)
     @Max(372)
-    private int windSpeed; // in km/h
+    private Integer windSpeed; // in km/h
 
     public WeatherInfoModel() {
     }
@@ -50,7 +51,7 @@ public class WeatherInfoModel {
         this.city = city;
     }
 
-    public double getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
@@ -62,7 +63,7 @@ public class WeatherInfoModel {
         this.type = type;
     }
 
-    public int getWindSpeed() {
+    public Integer getWindSpeed() {
         return windSpeed;
     }
 

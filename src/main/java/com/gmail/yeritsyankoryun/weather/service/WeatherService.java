@@ -44,7 +44,8 @@ public class WeatherService {
     }
 
     public void updateWeather(WeatherInfoDto dto) {
-        weatherDataAccessService.update(dto);
+
+        weatherDataAccessService.update(weatherConverter.convertToModel(dto));
     }
 
     public void delete(String country, String city) throws IllegalArgumentException {
